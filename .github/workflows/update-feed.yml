@@ -1,0 +1,51 @@
+name: Aggiorna feed RSS Questura Mantova
+
+# Il workflow gira sia con uno schedule interno di GitHub Actions (ogni ora,
+# come backup) sia tramite workflow_dispatch, innescabile via API da un
+# cronjob esterno (es. cron-job.org) che chiama:
+#   POST /repos/mbmichele/feed_questura_mn/actions/workflows/update-feed.yml/dispatches
+#
+# Nota: lo schedule di GitHub Actions è in UTC ed è "best effort" (può
+# slittare di qualche minuto in caso di carico sui runner condivisi); il
+# cronjob esterno resta il modo più puntuale per garantire l'orario.
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-feed
+  cancel-in-progress: false
+
+jobs:
+  update-feed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate feed
+        run: python scripts/generate_feed.py
+
+      - name: Commit and push if the feed changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- docs/feed.xml; then
+            git add docs/feed.xml
+            git commit -m "Aggiorna feed.xml [skip ci]"
+            git push
+          else
+            echo "Nessuna modifica al feed, niente da committare."
+          fi
