@@ -6,6 +6,7 @@ per scraping da:
 - `https://questure.poliziadistato.it/it/Mantova/archivio/view/5730dc9d1c604802219614`
 - `https://questure.poliziadistato.it/it/Mantova/archivio/category/5730dc9f408ec587750440`
 - `https://questure.poliziadistato.it/it/archivio/rss` (feed nazionale, filtrato sulle sole voci relative a Mantova)
+- `https://feeds.feedburner.com/poliziadistato/wOCUxU193aB` (feed FeedBurner, filtrato allo stesso modo sulle sole voci relative a Mantova)
 
 Il feed generato (`docs/feed.xml`) contiene titolo, data, descrizione e link
 di ogni comunicato, in formato RSS 2.0.
@@ -166,6 +167,21 @@ per poterlo riutilizzare o adattare in futuro:
 >   per poter rigenerare il pacchetto in futuro.
 > - Consegna il tutto come pacchetto .zip scaricabile, con un numero di
 >   versione nel nome del file.
+
+## Richieste successive al prompt originale
+
+Il pacchetto è stato aggiornato rispetto al prompt originale con queste
+richieste successive, riportate qui per completezza (in ordine cronologico):
+
+1. Inserito anche uno **schedule interno** di GitHub Actions (`cron: "0 * * * *"`),
+   in aggiunta al cronjob esterno, così il workflow gira ogni ora anche
+   senza dipendere da un servizio esterno.
+2. Aggiunto un **sistema anti-bot** che simula un accesso da browser reale:
+   header completi di Chrome su Windows, sessione persistente con cookie,
+   ritardo casuale fra le richieste.
+3. Aggiunta come ulteriore fonte il feed
+   `https://feeds.feedburner.com/poliziadistato/wOCUxU193aB`, filtrato
+   anch'esso sulle sole voci relative a Mantova.
 
 ## Licenza
 

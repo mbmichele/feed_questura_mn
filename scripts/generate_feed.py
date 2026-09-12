@@ -6,7 +6,9 @@ a partire da:
   - due pagine di archivio sul sito questure.poliziadistato.it (sezione
     Mantova), scaricate e "parsate" con BeautifulSoup;
   - il feed RSS nazionale https://questure.poliziadistato.it/it/archivio/rss,
-    filtrando solo le voci che riguardano Mantova.
+    filtrando solo le voci che riguardano Mantova;
+  - il feed FeedBurner https://feeds.feedburner.com/poliziadistato/wOCUxU193aB,
+    filtrando allo stesso modo solo le voci che riguardano Mantova.
 
 Il risultato viene scritto in docs/feed.xml (RSS 2.0), pronto per essere
 pubblicato con GitHub Pages.
@@ -43,16 +45,21 @@ ARCHIVE_PAGES = [
 ]
 
 NATIONAL_RSS_URL = "https://questure.poliziadistato.it/it/archivio/rss"
+FEEDBURNER_RSS_URL = "https://feeds.feedburner.com/poliziadistato/wOCUxU193aB"
 
-# Filtro per selezionare, dal feed nazionale, solo le voci relative a Mantova
+# I due feed RSS "sorgente" da cui filtrare solo le voci relative a Mantova
+EXTRA_RSS_SOURCES = [NATIONAL_RSS_URL, FEEDBURNER_RSS_URL]
+
+# Filtro per selezionare, dai feed sopra, solo le voci relative a Mantova
 MANTOVA_KEYWORDS = ("mantova",)
 
 FEED_TITLE = "Comunicati Questura di Mantova (non ufficiale)"
 FEED_LINK = "https://questure.poliziadistato.it/it/Mantova"
 FEED_DESCRIPTION = (
     "Feed RSS non ufficiale generato automaticamente a partire dalle pagine "
-    "di archivio della Questura di Mantova e dal feed RSS nazionale della "
-    "Polizia di Stato, filtrato sui soli comunicati relativi a Mantova."
+    "di archivio della Questura di Mantova e dai feed RSS della Polizia di "
+    "Stato (nazionale e FeedBurner), filtrato sui soli comunicati relativi "
+    "a Mantova."
 )
 # Aggiornare con l'URL reale di GitHub Pages una volta pubblicato il repo
 FEED_SELF_URL = "https://mbmichele.github.io/feed_questura_mn/feed.xml"
@@ -272,7 +279,7 @@ def scrape_archive_pages() -> list[Comunicato]:
 
 
 # --------------------------------------------------------------------------
-# Feed RSS nazionale, filtrato su Mantova
+# Feed RSS sorgente (nazionale + FeedBurner), filtrati su Mantova
 # --------------------------------------------------------------------------
 
 def matches_mantova(*parti_testo: str) -> bool:
@@ -280,11 +287,14 @@ def matches_mantova(*parti_testo: str) -> bool:
     return any(keyword in testo for keyword in MANTOVA_KEYWORDS)
 
 
-def scrape_national_rss() -> list[Comunicato]:
+def scrape_rss_source(url: str) -> list[Comunicato]:
+    """Scarica un feed RSS sorgente e ne estrae solo le voci relative a
+    Mantova (titolo, descrizione, link o categorie che contengono la
+    parola "mantova")."""
     try:
-        resp = fetch(NATIONAL_RSS_URL)
+        resp = fetch(url)
     except requests.RequestException as exc:
-        print(f"[WARN] impossibile scaricare {NATIONAL_RSS_URL}: {exc}", file=sys.stderr)
+        print(f"[WARN] impossibile scaricare {url}: {exc}", file=sys.stderr)
         return []
 
     soup = BeautifulSoup(resp.content, "xml")
@@ -329,6 +339,13 @@ def scrape_national_rss() -> list[Comunicato]:
             )
         )
 
+    return comunicati
+
+
+def scrape_all_rss_sources() -> list[Comunicato]:
+    comunicati: list[Comunicato] = []
+    for url in EXTRA_RSS_SOURCES:
+        comunicati.extend(scrape_rss_source(url))
     return comunicati
 
 
@@ -388,7 +405,7 @@ def build_rss(comunicati: list[Comunicato]) -> str:
 # --------------------------------------------------------------------------
 
 def main() -> None:
-    comunicati = scrape_archive_pages() + scrape_national_rss()
+    comunicati = scrape_archive_pages() + scrape_all_rss_sources()
     comunicati = dedup_and_sort(comunicati)
 
     if not comunicati:
