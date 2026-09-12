@@ -110,9 +110,22 @@ Il file generato si trova in `docs/feed.xml`.
 
 ## Note
 
-- Il sito `questure.poliziadistato.it` può applicare protezioni
-  anti-bot; se lo scraping smette di funzionare, verificare prima lo user
-  agent e i tempi di attesa fra le richieste.
+- Il sito `questure.poliziadistato.it` applica protezioni anti-bot. Per
+  ridurne i falsi positivi, lo script:
+  - usa un set di header realistico da browser desktop (Chrome su Windows:
+    `User-Agent`, `Accept`, `Accept-Language`, `Sec-Fetch-*`, `Sec-Ch-Ua`,
+    `Referer`, ecc.), invece dello User-Agent generico delle librerie HTTP;
+  - mantiene una sessione HTTP persistente (`requests.Session`), con i
+    cookie condivisi fra una richiesta e l'altra come farebbe un browser;
+  - attende un intervallo casuale (1.5–3.5 secondi) fra una richiesta e
+    l'altra, per non generare un pattern di traffico "a raffica".
+
+  Nonostante questo, alcune protezioni anti-bot bloccano comunque le
+  richieste in base all'indirizzo IP di provenienza (non solo agli header):
+  se lo scraping continua a fallire con errore 403 anche con questi
+  accorgimenti, il problema è probabilmente a livello di IP/rete più che di
+  header, e va verificato eseguendo il workflow direttamente sui runner di
+  GitHub Actions.
 - Trattandosi di scraping non ufficiale, la struttura HTML delle pagine può
   cambiare nel tempo: in tal caso occorre aggiornare i selettori in
   `scripts/generate_feed.py`.

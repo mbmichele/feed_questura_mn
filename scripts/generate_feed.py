@@ -27,6 +27,9 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 from zoneinfo import ZoneInfo
 
+import random
+import time
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -56,16 +59,40 @@ FEED_SELF_URL = "https://mbmichele.github.io/feed_questura_mn/feed.xml"
 
 TIMEZONE = ZoneInfo("Europe/Rome")
 
-USER_AGENT = (
-    "Mozilla/5.0 (compatible; feed-questura-mn/1.0; "
-    "+https://github.com/mbmichele/feed_questura_mn)"
+# Il sito applica delle protezioni anti-bot che bloccano gli header "nudi"
+# tipici delle librerie HTTP (es. "python-requests/2.x"). Per ridurre i
+# falsi positivi si simula un normale accesso da browser desktop (Chrome su
+# Windows), con lo stesso set di header che manderebbe un browser reale.
+BROWSER_USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
 )
 
-REQUEST_HEADERS = {
-    "User-Agent": USER_AGENT,
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "it-IT,it;q=0.9",
+BROWSER_HEADERS = {
+    "User-Agent": BROWSER_USER_AGENT,
+    "Accept": (
+        "text/html,application/xhtml+xml,application/xml;q=0.9,"
+        "image/avif,image/webp,*/*;q=0.8"
+    ),
+    "Accept-Language": "it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "Upgrade-Insecure-Requests": "1",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
+    "Sec-Ch-Ua": '"Chromium";v="128", "Not(A:Brand";v="24", "Google Chrome";v="128"',
+    "Sec-Ch-Ua-Mobile": "?0",
+    "Sec-Ch-Ua-Platform": '"Windows"',
+    # Simula la provenienza dalla home del sito, come farebbe un utente che
+    # naviga cliccando sui link invece di chiamare l'URL direttamente
+    "Referer": "https://questure.poliziadistato.it/it/Mantova",
 }
+
+# Ritardo (in secondi) fra una richiesta e l'altra, per non sembrare un
+# bot "a raffica": ogni richiesta attende un tempo casuale in questo range
+REQUEST_DELAY_RANGE = (1.5, 3.5)
 
 # Pattern del link di dettaglio di un comunicato, es.:
 #   cs_context.jsp?ID_LINK=...&id_context=1234567
@@ -135,8 +162,16 @@ def clean_text(text: str) -> str:
     return text
 
 
+# Sessione condivisa: mantiene i cookie fra una richiesta e l'altra, come
+# farebbe un browser reale durante la navigazione
+_session = requests.Session()
+_session.headers.update(BROWSER_HEADERS)
+
+
 def fetch(url: str) -> requests.Response:
-    resp = requests.get(url, headers=REQUEST_HEADERS, timeout=REQUEST_TIMEOUT)
+    # piccola pausa "umana" prima di ogni richiesta
+    time.sleep(random.uniform(*REQUEST_DELAY_RANGE))
+    resp = _session.get(url, timeout=REQUEST_TIMEOUT)
     resp.raise_for_status()
     return resp
 
