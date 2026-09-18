@@ -5,14 +5,8 @@
     <link>https://questure.poliziadistato.it/it/Mantova</link>
     <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova e dai feed RSS della Polizia di Stato (nazionale e FeedBurner), filtrato sui soli comunicati relativi a Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Fri, 18 Sep 2026 12:01:18 +0200</lastBuildDate>
+    <lastBuildDate>Fri, 18 Sep 2026 13:01:19 +0200</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Questura di Mantova: Polizia di Stato, Mantova. Stretta della Questura sul contrasto all’immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</title>
-      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226aacff1754a79029370302</link>
-      <guid isPermaLink="false">b46e5a0eeeac2bef8e1ef485b3b3586133d05573</guid>
-      <pubDate>Fri, 18 Sep 2026 12:01:18 +0200</pubDate>
-      <description>Questura di Mantova: Polizia di Stato, Mantova. Stretta della Questura sul contrasto all’immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</description>
-    </item>
+
   </channel>
 </rss>
