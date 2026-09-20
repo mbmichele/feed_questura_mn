@@ -5,7 +5,7 @@
     <link>https://questure.poliziadistato.it/it/Mantova</link>
     <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova e dai feed RSS della Polizia di Stato (nazionale e FeedBurner), filtrato sui soli comunicati relativi a Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Sun, 20 Sep 2026 19:09:08 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 20 Sep 2026 20:01:13 +0200</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
 
   </channel>
