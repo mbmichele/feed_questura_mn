@@ -11,7 +11,15 @@ name: Aggiorna feed RSS Questura Mantova
 on:
   schedule:
     - cron: "0 * * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      debug_dump:
+        description: >-
+          Salva come artifact scaricabile l'HTML/XML grezzo scaricato da
+          ogni fonte (utile per capire perché il parser non trova nulla)
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -36,16 +44,47 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Generate feed
+        env:
+          # Lo schedule non ha "inputs", quindi il debug dump è attivabile
+          # solo lanciando il workflow a mano con "Run workflow"
+          DEBUG_DUMP: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_dump && '1' || '0' }}
         run: python scripts/generate_feed.py
+
+      - name: Upload debug dump
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_dump }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-dump
+          path: debug/
+          retention-days: 7
 
       - name: Commit and push if the feed changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet -- docs/feed.xml; then
-            git add docs/feed.xml
-            git commit -m "Aggiorna feed.xml [skip ci]"
-            git push
-          else
+
+          if git diff --quiet -- docs/feed.xml; then
             echo "Nessuna modifica al feed, niente da committare."
+            exit 0
           fi
+
+          git add docs/feed.xml
+          git commit -m "Aggiorna feed.xml [skip ci]"
+
+          # Il cron interno e quello esterno possono innescare due run quasi
+          # in contemporanea: se nel frattempo un'altra run ha già fatto
+          # push, si riallinea con un rebase e si riprova (fino a 5 volte)
+          # invece di fallire con "fetch first".
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              echo "Push riuscito al tentativo $attempt."
+              exit 0
+            fi
+            echo "Push fallito (tentativo $attempt), riallineo con rebase e riprovo..."
+            sleep $((RANDOM % 10 + 5))
+            git fetch origin main
+            git rebase origin/main
+          done
+
+          echo "::error::Push fallito dopo diversi tentativi."
+          exit 1

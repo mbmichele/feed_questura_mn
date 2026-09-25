@@ -1,12 +1,27 @@
 # feed_questura_mn
 
+## 📡 Feed pubblico
+
+**[https://mbmichele.github.io/feed_questura_mn/feed.xml](https://mbmichele.github.io/feed_questura_mn/feed.xml)**
+
+```
+https://mbmichele.github.io/feed_questura_mn/feed.xml
+```
+
+Pagina di presentazione: [https://mbmichele.github.io/feed_questura_mn/](https://mbmichele.github.io/feed_questura_mn/)
+
+Questo è l'URL da incollare in un lettore RSS (Feedly, NetNewsWire, Thunderbird,
+ecc.). Il blocco sopra è pensato per essere copiato facilmente con un click
+sull'icona di copia che GitHub mostra passandoci sopra; il link in grassetto
+è invece cliccabile direttamente.
+
 Feed RSS **non ufficiale** dei comunicati della Questura di Mantova, generato
 per scraping da:
 
-- `https://questure.poliziadistato.it/it/Mantova/archivio/view/5730dc9d1c604802219614`
-- `https://questure.poliziadistato.it/it/Mantova/archivio/category/5730dc9f408ec587750440`
-- `https://questure.poliziadistato.it/it/archivio/rss` (feed nazionale, filtrato sulle sole voci relative a Mantova)
-- `https://feeds.feedburner.com/poliziadistato/wOCUxU193aB` (feed FeedBurner, filtrato allo stesso modo sulle sole voci relative a Mantova)
+- <https://questure.poliziadistato.it/it/Mantova/archivio/view/5730dc9d1c604802219614>
+- <https://questure.poliziadistato.it/it/Mantova/archivio/category/5730dc9f408ec587750440>
+- <https://questure.poliziadistato.it/it/archivio/rss> (feed nazionale, filtrato sulle sole voci relative a Mantova)
+- <https://feeds.feedburner.com/poliziadistato/wOCUxU193aB> (feed FeedBurner, filtrato allo stesso modo sulle sole voci relative a Mantova)
 
 Il feed generato (`docs/feed.xml`) contiene titolo, data, descrizione e link
 di ogni comunicato, in formato RSS 2.0.
@@ -48,8 +63,10 @@ Progetto non affiliato alla Polizia di Stato né al Ministero dell'Interno.
 2. In **Source**, seleziona **Deploy from a branch**.
 3. Branch: **main**, cartella: **/docs**.
 4. Salva. Dopo qualche minuto il sito sarà raggiungibile su
-   `https://mbmichele.github.io/feed_questura_mn/`, e il feed su
-   `https://mbmichele.github.io/feed_questura_mn/feed.xml`.
+   [https://mbmichele.github.io/feed_questura_mn/](https://mbmichele.github.io/feed_questura_mn/),
+   e il feed su
+   [https://mbmichele.github.io/feed_questura_mn/feed.xml](https://mbmichele.github.io/feed_questura_mn/feed.xml)
+   (vedi anche la sezione "📡 Feed pubblico" in cima a questo file).
 
 ### 3. Crea un Personal Access Token (PAT)
 
@@ -95,10 +112,37 @@ effort" dello scheduler di GitHub Actions.
    workflow su GitHub; il feed viene rigenerato e, se cambiato, committato
    automaticamente.
 
-### 5. Esecuzione manuale
+### 5. Esecuzione manuale e debug
 
 Il workflow può anche essere lanciato a mano da **Actions → Aggiorna feed
 RSS Questura Mantova → Run workflow**.
+
+Da lì è disponibile anche l'opzione **"Salva come artifact... debug_dump"**:
+se attivata, il workflow salva l'HTML/XML grezzo scaricato da ognuna delle
+quattro fonti in un artifact scaricabile ("debug-dump", conservato 7
+giorni), e nei log della run compaiono anche dei conteggi diagnostici
+(`[INFO]`), ad es.:
+
+```
+[INFO] https://questure.poliziadistato.it/...: HTTP 200, 48213 byte
+[INFO] https://questure.poliziadistato.it/...: 0 comunicati estratti
+[INFO]   link con pattern cs_context.jsp...id_context= trovati nell'HTML: 0
+[INFO] https://questure.poliziadistato.it/it/archivio/rss: 40 item totali nel feed
+[INFO] https://questure.poliziadistato.it/it/archivio/rss: 3 item su Mantova dopo il filtro
+```
+
+Questo permette di distinguere subito due casi molto diversi:
+
+- **il download fallisce** (righe `[WARN] impossibile scaricare...`, HTTP
+  403 o simili) → è un problema di anti-bot/rete;
+- **il download riesce ma non si trova nulla** (HTTP 200 ma 0 comunicati/0
+  link con il pattern atteso) → la struttura HTML del sito o del feed è
+  cambiata rispetto a quella prevista dal parser, e vanno aggiornati i
+  selettori in `scripts/generate_feed.py`.
+
+In quest'ultimo caso, l'artifact `debug-dump` contiene l'HTML/XML reale
+scaricato dal runner: è il modo più rapido per capire cosa aggiustare nel
+parser.
 
 ## Sviluppo locale
 
@@ -182,6 +226,16 @@ richieste successive, riportate qui per completezza (in ordine cronologico):
 3. Aggiunta come ulteriore fonte il feed
    `https://feeds.feedburner.com/poliziadistato/wOCUxU193aB`, filtrato
    anch'esso sulle sole voci relative a Mantova.
+4. Reso il commit/push resiliente a run concorrenti (rebase + retry invece
+   di fallire su "fetch first" quando cron interno ed esterno scattano
+   quasi insieme), e aggiunta diagnostica/debug dump (log `[INFO]` con
+   conteggi e artifact opzionale con l'HTML/XML grezzo scaricato) per
+   individuare perché il parser non trova comunicati anche quando il
+   download riesce.
+5. Aggiunta in cima al README una sezione "📡 Feed pubblico" con l'URL del
+   feed sia come link cliccabile sia in un blocco di codice copiabile, e
+   resi cliccabili anche gli altri link (fonti, GitHub Pages) nel resto del
+   file.
 
 ## Licenza
 

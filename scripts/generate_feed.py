@@ -29,11 +29,18 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 from zoneinfo import ZoneInfo
 
+import os
 import random
 import time
 
 import requests
 from bs4 import BeautifulSoup
+
+# Se la variabile d'ambiente DEBUG_DUMP=1 è impostata, ogni pagina/feed
+# scaricato viene salvato "grezzo" in debug/ per ispezione manuale (non
+# viene mai messo in docs/, quindi non finisce mai pubblicato su Pages)
+DEBUG_DUMP = os.environ.get("DEBUG_DUMP") == "1"
+DEBUG_DIR = Path(__file__).resolve().parent.parent / "debug"
 
 # --------------------------------------------------------------------------
 # Configurazione
@@ -175,11 +182,27 @@ _session = requests.Session()
 _session.headers.update(BROWSER_HEADERS)
 
 
+def _debug_dump(url: str, resp: requests.Response) -> None:
+    if not DEBUG_DUMP:
+        return
+    DEBUG_DIR.mkdir(parents=True, exist_ok=True)
+    slug = re.sub(r"[^a-zA-Z0-9]+", "_", url).strip("_")[:150]
+    ext = "xml" if "rss" in url.lower() or "feedburner" in url.lower() else "html"
+    out = DEBUG_DIR / f"{slug}.{ext}"
+    out.write_text(resp.text, encoding="utf-8", errors="replace")
+    print(f"[DEBUG] salvato dump di {url} -> {out} ({len(resp.text)} caratteri)", file=sys.stderr)
+
+
 def fetch(url: str) -> requests.Response:
     # piccola pausa "umana" prima di ogni richiesta
     time.sleep(random.uniform(*REQUEST_DELAY_RANGE))
     resp = _session.get(url, timeout=REQUEST_TIMEOUT)
     resp.raise_for_status()
+    print(
+        f"[INFO] {url} -> HTTP {resp.status_code}, {len(resp.content)} byte",
+        file=sys.stderr,
+    )
+    _debug_dump(url, resp)
     return resp
 
 
@@ -274,7 +297,18 @@ def scrape_archive_pages() -> list[Comunicato]:
         except requests.RequestException as exc:
             print(f"[WARN] impossibile scaricare {url}: {exc}", file=sys.stderr)
             continue
-        risultati.extend(extract_from_archive_page(resp.text, url))
+        estratti = extract_from_archive_page(resp.text, url)
+        print(f"[INFO] {url}: {len(estratti)} comunicati estratti", file=sys.stderr)
+        if not estratti:
+            n_link_dettaglio = len(
+                DETAIL_LINK_PATTERN.findall(resp.text)
+            )
+            print(
+                f"[INFO]   link con pattern cs_context.jsp...id_context= "
+                f"trovati nell'HTML: {n_link_dettaglio}",
+                file=sys.stderr,
+            )
+        risultati.extend(estratti)
     return risultati
 
 
@@ -298,9 +332,14 @@ def scrape_rss_source(url: str) -> list[Comunicato]:
         return []
 
     soup = BeautifulSoup(resp.content, "xml")
+    tutti_gli_item = soup.find_all("item")
+    print(
+        f"[INFO] {url}: {len(tutti_gli_item)} item totali nel feed",
+        file=sys.stderr,
+    )
     comunicati: list[Comunicato] = []
 
-    for item in soup.find_all("item"):
+    for item in tutti_gli_item:
         titolo = clean_text(item.title.get_text() if item.title else "")
         link = clean_text(item.link.get_text() if item.link else "")
         descrizione = clean_text(
@@ -339,6 +378,10 @@ def scrape_rss_source(url: str) -> list[Comunicato]:
             )
         )
 
+    print(
+        f"[INFO] {url}: {len(comunicati)} item su Mantova dopo il filtro",
+        file=sys.stderr,
+    )
     return comunicati
 
 
