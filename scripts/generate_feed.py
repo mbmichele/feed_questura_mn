@@ -54,19 +54,31 @@ ARCHIVE_PAGES = [
 NATIONAL_RSS_URL = "https://questure.poliziadistato.it/it/archivio/rss"
 FEEDBURNER_RSS_URL = "https://feeds.feedburner.com/poliziadistato/wOCUxU193aB"
 
-# I due feed RSS "sorgente" da cui filtrare solo le voci relative a Mantova
+# Feed RSS nazionali/aggregati, da cui vanno filtrate solo le voci relative
+# a Mantova (contengono notizie di tutte le questure d'Italia)
 EXTRA_RSS_SOURCES = [NATIONAL_RSS_URL, FEEDBURNER_RSS_URL]
 
-# Filtro per selezionare, dai feed sopra, solo le voci relative a Mantova
+# Feed di terze parti che convertono già in RSS la sola pagina di archivio
+# della Questura di Mantova (es. servizi "page to RSS"): qui ogni voce è
+# già relativa a Mantova per definizione, quindi NON va applicato il
+# filtro testuale "mantova" (alcuni titoli non contengono letteralmente la
+# parola "Mantova", es. "La Polizia di Stato celebra il suo Santo Patrono
+# San Michele Arcangelo.")
+DIRECT_MANTOVA_RSS_SOURCES = [
+    "https://politepaul.com/fd/7jQTccRVOive.xml",
+]
+
+# Filtro per selezionare, dai feed in EXTRA_RSS_SOURCES, solo le voci
+# relative a Mantova
 MANTOVA_KEYWORDS = ("mantova",)
 
 FEED_TITLE = "Comunicati Questura di Mantova (non ufficiale)"
 FEED_LINK = "https://questure.poliziadistato.it/it/Mantova"
 FEED_DESCRIPTION = (
     "Feed RSS non ufficiale generato automaticamente a partire dalle pagine "
-    "di archivio della Questura di Mantova e dai feed RSS della Polizia di "
-    "Stato (nazionale e FeedBurner), filtrato sui soli comunicati relativi "
-    "a Mantova."
+    "di archivio della Questura di Mantova, dai feed RSS della Polizia di "
+    "Stato (nazionale e FeedBurner, filtrati sui soli comunicati relativi a "
+    "Mantova) e da un mirror RSS di terze parti già specifico per Mantova."
 )
 # Aggiornare con l'URL reale di GitHub Pages una volta pubblicato il repo
 FEED_SELF_URL = "https://mbmichele.github.io/feed_questura_mn/feed.xml"
@@ -108,11 +120,16 @@ BROWSER_HEADERS = {
 # bot "a raffica": ogni richiesta attende un tempo casuale in questo range
 REQUEST_DELAY_RANGE = (1.5, 3.5)
 
-# Pattern del link di dettaglio di un comunicato, es.:
-#   cs_context.jsp?ID_LINK=...&id_context=1234567
-DETAIL_LINK_PATTERN = re.compile(r"cs_context\.jsp\?.*id_context=", re.IGNORECASE)
+# Ogni comunicato, nelle pagine di archivio, sta in un blocco:
+#   <div class="elenco_notizie notizia">
+#     <span class="label label-primary">Categoria</span>
+#     <h3><a href="/it/Mantova/articolo/<id>">Titolo</a></h3>
+#     <div class="content"> ... <p><em>28-09-2026</em></p> </div>
+#   </div>
+ARCHIVE_ITEM_SELECTOR = {"class": "elenco_notizie"}  # combinato con "notizia" a runtime
 
-# Pattern di una data italiana nel testo, es. "10 settembre 2026"
+# Pattern di una data italiana nel testo, es. "10 settembre 2026" (usato per
+# i feed RSS sorgente, dove la data compare scritta per esteso)
 MONTHS_IT = {
     "gennaio": 1, "febbraio": 2, "marzo": 3, "aprile": 4, "maggio": 5,
     "giugno": 6, "luglio": 7, "agosto": 8, "settembre": 9, "ottobre": 10,
@@ -122,6 +139,21 @@ DATE_PATTERN = re.compile(
     r"\b(\d{1,2})\s+(" + "|".join(MONTHS_IT.keys()) + r")\s+(\d{4})\b",
     re.IGNORECASE,
 )
+
+# Pattern di una data numerica gg-mm-aaaa, usato nelle pagine di archivio
+# (es. "28-09-2026")
+DATE_PATTERN_NUMERIC = re.compile(r"\b(\d{2})-(\d{2})-(\d{4})\b")
+
+
+def parse_numeric_date(text: str) -> "datetime | None":
+    match = DATE_PATTERN_NUMERIC.search(text)
+    if not match:
+        return None
+    day, month, year = match.groups()
+    try:
+        return datetime(int(year), int(month), int(day), tzinfo=TIMEZONE)
+    except ValueError:
+        return None
 
 OUTPUT_PATH = Path(__file__).resolve().parent.parent / "docs" / "feed.xml"
 
@@ -212,69 +244,74 @@ def fetch(url: str) -> requests.Response:
 
 def extract_from_archive_page(html: str, page_url: str) -> list[Comunicato]:
     """
-    Individua ogni comunicato a partire dai link di dettaglio
-    (pattern cs_context.jsp?...id_context=...), risale al blocco di testo
-    che li contiene ed estrae titolo, data, link e descrizione.
+    Individua ogni comunicato nel blocco:
+
+        <div class="elenco_notizie notizia">
+          <span class="label label-primary">Categoria</span>
+          <h3><a href="/it/Mantova/articolo/<id>">Titolo</a></h3>
+          <div class="content">
+            <img ... >
+            <p><em>28-09-2026</em></p>
+          </div>
+        </div>
+
+    L'etichetta di categoria (span.label, es. "Iniziative", "I fatti del
+    giorno", "Servizi") sta in un tag a parte e viene scartata a
+    prescindere da quante e quali categorie compaiono: si usa solo per
+    isolare titolo, data e link, non entra mai in titolo/descrizione.
     """
     soup = BeautifulSoup(html, "html.parser")
     comunicati: list[Comunicato] = []
     seen_links: set[str] = set()
 
-    for anchor in soup.find_all("a", href=True):
-        href = anchor["href"]
-        if not DETAIL_LINK_PATTERN.search(href):
+    blocchi = soup.find_all(
+        "div", class_=lambda c: c and "elenco_notizie" in c.split() and "notizia" in c.split()
+    )
+
+    for block in blocchi:
+        h3 = block.find("h3")
+        link_tag = h3.find("a", href=True) if h3 else None
+        if link_tag is None:
+            # fallback: qualunque link dentro al blocco che non sia
+            # l'etichetta di categoria
+            link_tag = block.find("a", href=True)
+        if link_tag is None:
             continue
 
+        href = link_tag["href"]
         link = requests.compat.urljoin(page_url, href)
         if link in seen_links:
             continue
 
-        titolo = clean_text(anchor.get_text())
+        titolo = clean_text(link_tag.get_text())
         if not titolo or is_category_label(titolo):
-            # a volte il primo <a> trovato è in realtà l'etichetta di
-            # categoria: si prova a risalire al blocco contenitore per
-            # cercare un titolo migliore più sotto
-            titolo = ""
-
-        # Risale al blocco che contiene l'intero comunicato (titolo,
-        # eventuali etichette di categoria, data, riassunto)
-        block = anchor.find_parent(["div", "li", "article", "tr"]) or anchor.parent
-        block_text_lines = []
-        if block is not None:
-            for el in block.stripped_strings:
-                block_text_lines.append(clean_text(el))
-        block_text_lines = [line for line in block_text_lines if line]
-
-        # Scarta automaticamente le etichette di categoria (terminano
-        # sempre con una virgola)
-        content_lines = [
-            line for line in block_text_lines if not is_category_label(line)
-        ]
-
-        if not content_lines:
             continue
 
-        if not titolo:
-            titolo = content_lines[0]
-
-        # La data, se presente, viene individuata cercando un pattern
-        # "giorno mese anno" in una qualunque delle righe del blocco
+        # Data: cercata dentro div.content, tipicamente in un <em>
+        # ("28-09-2026"); come fallback si cerca nel testo dell'intero
+        # blocco, sia in formato numerico sia in formato esteso italiano
+        content_div = block.find("div", class_="content")
         data = None
-        for line in content_lines:
-            data = parse_italian_date(line)
-            if data:
-                break
+        descrizione_parts: list[str] = []
 
-        # La descrizione è il resto del testo del blocco, escludendo il
-        # titolo, eventuali etichette di categoria e la riga di data
-        descrizione_lines = [
-            line for line in content_lines
-            if line != titolo and not DATE_PATTERN.fullmatch(line)
-        ]
-        descrizione = clean_text(" ".join(descrizione_lines))
+        if content_div is not None:
+            for el in content_div.find_all(["p", "em", "span"]):
+                testo = clean_text(el.get_text())
+                if not testo or is_category_label(testo):
+                    continue
+                trovata = parse_numeric_date(testo) or parse_italian_date(testo)
+                if trovata and data is None:
+                    data = trovata
+                    continue
+                # testo che non è (solo) una data: possibile descrizione
+                if not DATE_PATTERN_NUMERIC.fullmatch(testo) and not DATE_PATTERN.fullmatch(testo):
+                    descrizione_parts.append(testo)
 
-        if not titolo:
-            continue
+        if data is None:
+            testo_blocco = clean_text(block.get_text())
+            data = parse_numeric_date(testo_blocco) or parse_italian_date(testo_blocco)
+
+        descrizione = clean_text(" ".join(descrizione_parts))
 
         comunicati.append(
             Comunicato(
@@ -300,12 +337,10 @@ def scrape_archive_pages() -> list[Comunicato]:
         estratti = extract_from_archive_page(resp.text, url)
         print(f"[INFO] {url}: {len(estratti)} comunicati estratti", file=sys.stderr)
         if not estratti:
-            n_link_dettaglio = len(
-                DETAIL_LINK_PATTERN.findall(resp.text)
-            )
+            n_blocchi = resp.text.count("elenco_notizie")
             print(
-                f"[INFO]   link con pattern cs_context.jsp...id_context= "
-                f"trovati nell'HTML: {n_link_dettaglio}",
+                f"[INFO]   occorrenze di 'elenco_notizie' trovate "
+                f"nell'HTML: {n_blocchi}",
                 file=sys.stderr,
             )
         risultati.extend(estratti)
@@ -313,7 +348,7 @@ def scrape_archive_pages() -> list[Comunicato]:
 
 
 # --------------------------------------------------------------------------
-# Feed RSS sorgente (nazionale + FeedBurner), filtrati su Mantova
+# Feed RSS sorgente (nazionale, FeedBurner, mirror dedicati a Mantova)
 # --------------------------------------------------------------------------
 
 def matches_mantova(*parti_testo: str) -> bool:
@@ -321,10 +356,16 @@ def matches_mantova(*parti_testo: str) -> bool:
     return any(keyword in testo for keyword in MANTOVA_KEYWORDS)
 
 
-def scrape_rss_source(url: str) -> list[Comunicato]:
-    """Scarica un feed RSS sorgente e ne estrae solo le voci relative a
-    Mantova (titolo, descrizione, link o categorie che contengono la
-    parola "mantova")."""
+def scrape_rss_source(url: str, filtra_mantova: bool = True) -> list[Comunicato]:
+    """Scarica un feed RSS sorgente e ne estrae le voci.
+
+    Se filtra_mantova è True (feed nazionali/aggregati, con notizie di
+    tutta Italia) tiene solo le voci il cui titolo, descrizione, link o
+    categorie contengono la parola "mantova". Se è False (mirror dedicati
+    già specifici per Mantova, es. servizi "page to RSS" della sola pagina
+    di archivio di Mantova) tiene tutte le voci senza filtrare, perché sono
+    già relative a Mantova per definizione.
+    """
     try:
         resp = fetch(url)
     except requests.RequestException as exc:
@@ -349,7 +390,7 @@ def scrape_rss_source(url: str) -> list[Comunicato]:
             clean_text(cat.get_text()) for cat in item.find_all("category")
         )
 
-        if not matches_mantova(titolo, descrizione, link, categorie):
+        if filtra_mantova and not matches_mantova(titolo, descrizione, link, categorie):
             continue
 
         data = None
@@ -369,6 +410,12 @@ def scrape_rss_source(url: str) -> list[Comunicato]:
         if not titolo or not link:
             continue
 
+        # Alcuni servizi "page to RSS" mettono in description una stringa
+        # fissa poco utile (es. "Delivered by ... service"): in tal caso
+        # si preferisce il titolo come descrizione
+        if descrizione.lower().startswith("delivered by"):
+            descrizione = ""
+
         comunicati.append(
             Comunicato(
                 titolo=titolo,
@@ -378,15 +425,15 @@ def scrape_rss_source(url: str) -> list[Comunicato]:
             )
         )
 
-    print(
-        f"[INFO] {url}: {len(comunicati)} item su Mantova dopo il filtro",
-        file=sys.stderr,
-    )
+    etichetta = "su Mantova dopo il filtro" if filtra_mantova else "estratti (nessun filtro: fonte già dedicata a Mantova)"
+    print(f"[INFO] {url}: {len(comunicati)} item {etichetta}", file=sys.stderr)
     return comunicati
 
 
 def scrape_all_rss_sources() -> list[Comunicato]:
     comunicati: list[Comunicato] = []
+    for url in DIRECT_MANTOVA_RSS_SOURCES:
+        comunicati.extend(scrape_rss_source(url, filtra_mantova=False))
     for url in EXTRA_RSS_SOURCES:
         comunicati.extend(scrape_rss_source(url))
     return comunicati

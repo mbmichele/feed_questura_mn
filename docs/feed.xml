@@ -3,10 +3,44 @@
   <channel>
     <title>Comunicati Questura di Mantova (non ufficiale)</title>
     <link>https://questure.poliziadistato.it/it/Mantova</link>
-    <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova e dai feed RSS della Polizia di Stato (nazionale e FeedBurner), filtrato sui soli comunicati relativi a Mantova.</description>
+    <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova, dai feed RSS della Polizia di Stato (nazionale e FeedBurner, filtrati sui soli comunicati relativi a Mantova) e da un mirror RSS di terze parti già specifico per Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Sat, 03 Oct 2026 08:01:19 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 04 Oct 2026 07:57:05 +0200</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
-
+    <item>
+      <title>La Polizia di Stato celebra il suo Santo Patrono San Michele Arcangelo.</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226abbfeb1151c3021928143</link>
+      <guid isPermaLink="false">590eee607985cd4368fbdf831b84883a348f5999</guid>
+      <pubDate>Tue, 29 Sep 2026 19:29:31 +0200</pubDate>
+      <description>La Polizia di Stato celebra il suo Santo Patrono San Michele Arcangelo.</description>
+    </item>
+    <item>
+      <title>La Polizia di Stato celebra San Michele Arcangelo, Patrono della Polizia di Stato</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226aba36bef2e1b702604910</link>
+      <guid isPermaLink="false">c1479e62da37fd47f242c47fc5d70d8f209453a8</guid>
+      <pubDate>Mon, 28 Sep 2026 00:00:00 +0200</pubDate>
+      <description>La Polizia di Stato celebra San Michele Arcangelo, Patrono della Polizia di Stato</description>
+    </item>
+    <item>
+      <title>Mantova, Polizia Stato: Festivaletteratura, intensificati i controlli da parte della Questura. Denunciati tre soggetti per somministrazione di bevande alcoliche a minori e violazione del foglio di via.</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226ab4fdf6adf68682597277</link>
+      <guid isPermaLink="false">428229e7d82f4f4de6710b8800db8875d15df284</guid>
+      <pubDate>Thu, 24 Sep 2026 00:00:00 +0200</pubDate>
+      <description>Mantova, Polizia Stato: Festivaletteratura, intensificati i controlli da parte della Questura. Denunciati tre soggetti per somministrazione di bevande alcoliche a minori e violazione del foglio di via.</description>
+    </item>
+    <item>
+      <title>Polizia di Stato, Mantova. Stretta della Questura sul contrasto all'immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226aacff1754a79029370302</link>
+      <guid isPermaLink="false">b46e5a0eeeac2bef8e1ef485b3b3586133d05573</guid>
+      <pubDate>Fri, 18 Sep 2026 00:00:00 +0200</pubDate>
+      <description>Polizia di Stato, Mantova. Stretta della Questura sul contrasto all'immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</description>
+    </item>
+    <item>
+      <title>Informazioni per il rilascio del passaporto</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/102269f1b1f71a878477219408</link>
+      <guid isPermaLink="false">cd106de2ebe223ace4861f3a120cef2ed2a29ab7</guid>
+      <pubDate>Wed, 29 Apr 2026 00:00:00 +0200</pubDate>
+      <description>Informazioni per il rilascio del passaporto</description>
+    </item>
   </channel>
 </rss>

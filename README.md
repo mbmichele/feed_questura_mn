@@ -22,6 +22,7 @@ per scraping da:
 - <https://questure.poliziadistato.it/it/Mantova/archivio/category/5730dc9f408ec587750440>
 - <https://questure.poliziadistato.it/it/archivio/rss> (feed nazionale, filtrato sulle sole voci relative a Mantova)
 - <https://feeds.feedburner.com/poliziadistato/wOCUxU193aB> (feed FeedBurner, filtrato allo stesso modo sulle sole voci relative a Mantova)
+- <https://politepaul.com/fd/7jQTccRVOive.xml> (mirror RSS di terze parti della sola pagina di archivio di Mantova: nessun filtro, è già specifico per Mantova)
 
 Il feed generato (`docs/feed.xml`) contiene titolo, data, descrizione e link
 di ogni comunicato, in formato RSS 2.0.
@@ -30,11 +31,18 @@ Progetto non affiliato alla Polizia di Stato né al Ministero dell'Interno.
 
 ## Come funziona
 
-- `scripts/generate_feed.py` scarica le pagine sopra indicate, individua ogni
-  comunicato tramite i link di dettaglio (pattern `cs_context.jsp?...id_context=...`),
-  risale al blocco di testo che lo contiene ed estrae titolo, data, link e
-  descrizione. Le etichette di categoria (che terminano sempre con una
-  virgola, es. "Per il cittadino,") vengono scartate automaticamente.
+- `scripts/generate_feed.py` scarica le due pagine di archivio e individua
+  ogni comunicato nel blocco `<div class="elenco_notizie notizia">`,
+  estraendone titolo e link da `h3 > a`, la data (formato `gg-mm-aaaa`) da
+  `div.content > p > em` e la descrizione dal resto del testo in
+  `div.content`. L'etichetta di categoria (`span.label`, es. "Iniziative",
+  "I fatti del giorno") sta in un tag a parte e viene scartata
+  automaticamente, a prescindere da quante e quali categorie compaiono.
+- Scarica anche tre feed RSS: quello nazionale e quello FeedBurner (dai
+  quali tiene solo le voci che citano "mantova" in titolo, descrizione,
+  link o categoria) e il mirror PolitePaul, che converte già in RSS la
+  sola pagina di archivio di Mantova — da quest'ultimo tiene tutte le voci
+  senza filtrare, perché sono già specifiche di Mantova.
 - Il risultato viene scritto in `docs/feed.xml`.
 - `docs/index.html` è una pagina minimale che linka il feed, pubblicata
   tramite GitHub Pages.
@@ -126,7 +134,7 @@ giorni), e nei log della run compaiono anche dei conteggi diagnostici
 ```
 [INFO] https://questure.poliziadistato.it/...: HTTP 200, 48213 byte
 [INFO] https://questure.poliziadistato.it/...: 0 comunicati estratti
-[INFO]   link con pattern cs_context.jsp...id_context= trovati nell'HTML: 0
+[INFO]   occorrenze di 'elenco_notizie' trovate nell'HTML: 0
 [INFO] https://questure.poliziadistato.it/it/archivio/rss: 40 item totali nel feed
 [INFO] https://questure.poliziadistato.it/it/archivio/rss: 3 item su Mantova dopo il filtro
 ```
@@ -236,6 +244,77 @@ richieste successive, riportate qui per completezza (in ordine cronologico):
    feed sia come link cliccabile sia in un blocco di codice copiabile, e
    resi cliccabili anche gli altri link (fonti, GitHub Pages) nel resto del
    file.
+6. Corretto il parser delle pagine di archivio sulla base dell'HTML reale
+   (fornito dall'utente): il pattern `cs_context.jsp?...id_context=...`
+   ipotizzato inizialmente non esiste sul sito. I comunicati si trovano
+   invece in blocchi `<div class="elenco_notizie notizia">`, con titolo e
+   link in `h3 > a`, data in formato gg-mm-aaaa dentro `div.content > p >
+   em`, e l'etichetta di categoria in uno `<span class="label">` separato
+   (non termina con una virgola, come invece ipotizzato in origine).
+7. Aggiunta come fonte ulteriore il mirror RSS di terze parti
+   `https://politepaul.com/fd/7jQTccRVOive.xml`, che converte già in RSS
+   la pagina di archivio di Mantova: a differenza delle altre fonti RSS,
+   qui non si applica il filtro testuale "mantova" perché ogni voce è già
+   specifica di Mantova per definizione.
+
+## Prompt aggiornato (consolidato)
+
+Il prompt originale più tutte le richieste successive elencate sopra,
+riscritti come un unico prompt coerente: è la versione da riusare per
+rigenerare il pacchetto da zero, allo stato attuale del progetto.
+
+> Voglio un repository GitHub che generi un feed RSS pubblico non ufficiale
+> a partire dagli elementi pubblicati alle pagine:
+> https://questure.poliziadistato.it/it/Mantova/archivio/view/5730dc9d1c604802219614
+> https://questure.poliziadistato.it/it/Mantova/archivio/category/5730dc9f408ec587750440
+>
+> e dai feed:
+> - https://questure.poliziadistato.it/it/archivio/rss (filtrando solo le voci che riguardano Mantova)
+> - https://feeds.feedburner.com/poliziadistato/wOCUxU193aB (filtrando solo le voci che riguardano Mantova)
+> - https://politepaul.com/fd/7jQTccRVOive.xml (mirror RSS di terze parti già specifico per Mantova: nessun filtro)
+>
+> Il flusso RSS deve contenere titolo, data, descrizione e link di ogni
+> comunicato.
+>
+> Requisiti:
+> - Script Python (requests + BeautifulSoup) che fa scraping delle pagine,
+>   individua ogni comunicato nel blocco `<div class="elenco_notizie
+>   notizia">`, estraendo titolo e link da `h3 > a`, la data (formato
+>   gg-mm-aaaa) da `div.content > p > em` e la descrizione dal resto del
+>   testo in `div.content`. L'etichetta di categoria (`span.label`, es.
+>   "Iniziative", "I fatti del giorno") sta in un tag a parte e va scartata
+>   automaticamente, indipendentemente da quante e quali categorie
+>   compaiono.
+> - Le richieste HTTP devono simulare un accesso da browser reale (non la
+>   libreria HTTP "nuda"): header completi tipo Chrome su Windows
+>   (User-Agent, Accept, Accept-Language, Sec-Fetch-*, Sec-Ch-Ua, Referer),
+>   sessione persistente con cookie condivisi fra le richieste, e un
+>   piccolo ritardo casuale fra una richiesta e l'altra, per ridurre i falsi
+>   positivi delle protezioni anti-bot del sito.
+> - Genera un file docs/feed.xml (RSS 2.0 valido, con guid, pubDate in
+>   formato RFC 822, fuso orario Europe/Rome).
+> - GitHub Action con doppio trigger orario: uno schedule interno di GitHub
+>   Actions (ogni ora) come backup automatico, più workflow_dispatch,
+>   innescabile anche da un cronjob esterno (es. cron-job.org) che chiama
+>   l'API di GitHub per lanciare il workflow ogni ora. In entrambi i casi il
+>   workflow rigenera il feed e fa commit/push solo se il contenuto cambia;
+>   il push deve essere resiliente a run concorrenti (rebase + retry invece
+>   di fallire su "fetch first" quando i due trigger scattano quasi
+>   insieme).
+> - Diagnostica integrata nello script (log con conteggi di byte scaricati,
+>   comunicati estratti per fonte, item totali/filtrati per i feed RSS) e
+>   un'opzione di debug (parametro del workflow_dispatch) che salva come
+>   artifact scaricabile l'HTML/XML grezzo scaricato da ogni fonte, per
+>   poter diagnosticare eventuali cambi di struttura del sito.
+> - docs/index.html minimale con link al feed, per la pubblicazione tramite
+>   GitHub Pages (branch main, cartella /docs).
+> - README con: istruzioni di setup (creazione repo, GitHub Pages, PAT e
+>   configurazione del cronjob esterno); una sezione in cima con l'URL
+>   pubblico del feed generato sia come link cliccabile sia in un blocco di
+>   codice facilmente copiabile; questo stesso prompt aggiornato incluso,
+>   per poter rigenerare il pacchetto in futuro.
+> - Consegna il tutto come pacchetto .zip scaricabile, con un numero di
+>   versione nel nome del file.
 
 ## Licenza
 
