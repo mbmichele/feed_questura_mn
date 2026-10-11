@@ -68,22 +68,45 @@ jobs:
             exit 0
           fi
 
+          # Il cron interno e quello esterno possono innescare due run quasi
+          # in contemporanea: se nel frattempo un'altra run ha già fatto
+          # push, bisogna riallinearsi e riprovare invece di fallire con
+          # "fetch first".
+          #
+          # docs/feed.xml è rigenerato per intero a ogni run (contiene
+          # sempre un lastBuildDate diverso), quindi un rebase/merge
+          # testuale del file va quasi sempre in conflitto: due run che
+          # toccano la stessa riga non sono "unificabili" in modo
+          # sensato. La strategia qui non prova a unire i contenuti: a
+          # ogni tentativo appoggia di nuovo lo stesso commit (con il
+          # feed appena generato da questo run) sull'ultimo stato remoto,
+          # scartando qualsiasi versione intermedia del file invece di
+          # fonderla.
           git add docs/feed.xml
           git commit -m "Aggiorna feed.xml [skip ci]"
 
-          # Il cron interno e quello esterno possono innescare due run quasi
-          # in contemporanea: se nel frattempo un'altra run ha già fatto
-          # push, si riallinea con un rebase e si riprova (fino a 5 volte)
-          # invece di fallire con "fetch first".
           for attempt in 1 2 3 4 5; do
             if git push origin HEAD:main; then
               echo "Push riuscito al tentativo $attempt."
               exit 0
             fi
-            echo "Push fallito (tentativo $attempt), riallineo con rebase e riprovo..."
+            echo "Push fallito (tentativo $attempt), riappoggio il commit sull'ultimo stato remoto e riprovo..."
             sleep $((RANDOM % 10 + 5))
             git fetch origin main
-            git rebase origin/main
+            # --soft: sposta HEAD sull'ultimo commit remoto senza toccare
+            # l'indice né i file di lavoro, così il feed generato da
+            # questo run resta pronto per essere ricommittato sopra.
+            git reset --soft origin/main
+            git add docs/feed.xml
+            # Se un'altra run ha nel frattempo pubblicato un feed
+            # identico a quello appena generato qui, non resta nulla da
+            # committare: non è un errore, il risultato voluto (feed
+            # aggiornato su origin/main) è già stato raggiunto.
+            if git diff --cached --quiet; then
+              echo "Il remoto ha già un feed identico a quello generato in questa run, niente altro da fare."
+              exit 0
+            fi
+            git commit -m "Aggiorna feed.xml [skip ci]"
           done
 
           echo "::error::Push fallito dopo diversi tentativi."

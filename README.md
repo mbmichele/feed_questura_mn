@@ -256,6 +256,16 @@ richieste successive, riportate qui per completezza (in ordine cronologico):
    la pagina di archivio di Mantova: a differenza delle altre fonti RSS,
    qui non si applica il filtro testuale "mantova" perché ogni voce è già
    specifica di Mantova per definizione.
+8. Corretta la strategia di push concorrente: il rebase introdotto al
+   punto 4 può andare in conflitto su `docs/feed.xml`, perché quel file è
+   rigenerato per intero a ogni run (contiene sempre un `lastBuildDate`
+   diverso) e un merge testuale riga per riga fallisce quasi sempre. La
+   nuova strategia non unisce mai i contenuti: a ogni tentativo fallito
+   riappoggia lo stesso commit (con il feed di questa run) sull'ultimo
+   stato remoto con `git reset --soft` + ricommit, invece di fare
+   `git rebase`. Se nel frattempo un'altra run ha già pubblicato un feed
+   identico, il passo si conclude senza errori invece di tentare un
+   commit vuoto.
 
 ## Prompt aggiornato (consolidato)
 
@@ -298,9 +308,15 @@ rigenerare il pacchetto da zero, allo stato attuale del progetto.
 >   innescabile anche da un cronjob esterno (es. cron-job.org) che chiama
 >   l'API di GitHub per lanciare il workflow ogni ora. In entrambi i casi il
 >   workflow rigenera il feed e fa commit/push solo se il contenuto cambia;
->   il push deve essere resiliente a run concorrenti (rebase + retry invece
->   di fallire su "fetch first" quando i due trigger scattano quasi
->   insieme).
+>   il push deve essere resiliente a run concorrenti, senza fallire su
+>   "fetch first" quando i due trigger scattano quasi insieme. Dato che il
+>   feed è rigenerato per intero a ogni run (contiene sempre un
+>   lastBuildDate diverso), la strategia di retry non deve provare a
+>   unire i contenuti con un rebase/merge testuale (va quasi sempre in
+>   conflitto): a ogni tentativo fallito deve riappoggiare lo stesso
+>   commit sull'ultimo stato remoto (fetch + reset soft + ricommit) e
+>   riprovare il push, concludendosi senza errori se nel frattempo il
+>   remoto ha già un contenuto identico.
 > - Diagnostica integrata nello script (log con conteggi di byte scaricati,
 >   comunicati estratti per fonte, item totali/filtrati per i feed RSS) e
 >   un'opzione di debug (parametro del workflow_dispatch) che salva come
