@@ -5,7 +5,7 @@
     <link>https://questure.poliziadistato.it/it/Mantova</link>
     <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova, dai feed RSS della Polizia di Stato (nazionale e FeedBurner, filtrati sui soli comunicati relativi a Mantova) e da un mirror RSS di terze parti già specifico per Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Fri, 16 Oct 2026 13:01:33 +0200</lastBuildDate>
+    <lastBuildDate>Fri, 16 Oct 2026 14:01:30 +0200</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Minacce di morte al compagno della ex: la Polizia di Stato arresta un uomo per atti persecutori</title>
@@ -41,13 +41,6 @@
       <guid isPermaLink="false">b46e5a0eeeac2bef8e1ef485b3b3586133d05573</guid>
       <pubDate>Fri, 18 Sep 2026 00:00:00 +0200</pubDate>
       <description>Polizia di Stato, Mantova. Stretta della Questura sul contrasto all’immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</description>
-    </item>
-    <item>
-      <title>Mantova, Polizia di Stato: si oppone agli agenti e li aggredisce, arrestato.</title>
-      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226aaa71740b81e954011827</link>
-      <guid isPermaLink="false">3e95a99f190e061abe5dd8c45fd03fde5a9c0930</guid>
-      <pubDate>Wed, 16 Sep 2026 11:14:26 +0200</pubDate>
-      <description>Mantova, Polizia di Stato: si oppone agli agenti e li aggredisce, arrestato.</description>
     </item>
     <item>
       <title>Polizia di Stato: assegnati 11 Agenti alla Questura di Mantova</title>
