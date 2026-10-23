@@ -5,8 +5,15 @@
     <link>https://questure.poliziadistato.it/it/Mantova</link>
     <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova, dai feed RSS della Polizia di Stato (nazionale e FeedBurner, filtrati sui soli comunicati relativi a Mantova) e da un mirror RSS di terze parti già specifico per Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Fri, 23 Oct 2026 11:01:37 +0200</lastBuildDate>
+    <lastBuildDate>Fri, 23 Oct 2026 12:01:36 +0200</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mantova: truffa informatica da oltre 30 mila euro. La Polizia di Stato denuncia sei persone. Perquisizioni in provincia di Caserta e Napoli.</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226adb2fa9006b2789068728</link>
+      <guid isPermaLink="false">162c7002d4fd2f79b7f1b56bf00f84d617f67042</guid>
+      <pubDate>Fri, 23 Oct 2026 00:00:00 +0200</pubDate>
+      <description>Mantova: truffa informatica da oltre 30 mila euro. La Polizia di Stato denuncia sei persone. Perquisizioni in provincia di Caserta e Napoli.</description>
+    </item>
     <item>
       <title>Polizia di Stato: la Polizia Stradale di Mantova sequestra 60 auto fuori uso, rifiuti pericolosi e un’officina meccanica.</title>
       <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226ad2388962b8c674354041</link>
@@ -50,6 +57,13 @@
       <description>Polizia di Stato, Mantova. Stretta della Questura sul contrasto all’immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</description>
     </item>
     <item>
+      <title>Mantova: intensificati i controlli durante il festival Food and Science. Le Forze dell’Ordine identificano gli attivisti.</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226a0c05c9f07b5652282642</link>
+      <guid isPermaLink="false">756a9a3eea076652afeab570752158aefdb01902</guid>
+      <pubDate>Sat, 12 Sep 2026 16:36:22 +0200</pubDate>
+      <description>Mantova: intensificati i controlli durante il festival Food and Science. Le Forze dell’Ordine identificano gli attivisti.</description>
+    </item>
+    <item>
       <title>Polizia di Stato: assegnati 11 Agenti alla Questura di Mantova</title>
       <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226a761ff25b668721235487</link>
       <guid isPermaLink="false">43f582846b7e6b3fb138e9503b80a79b942d261d</guid>
@@ -69,13 +83,6 @@
       <guid isPermaLink="false">ef3274eb4c1cb4be156b324712fc5455e4edfcb7</guid>
       <pubDate>Wed, 24 Jun 2026 00:00:00 +0200</pubDate>
       <description>Polizia di Stato: tre nuovi Funzionari alla Questura</description>
-    </item>
-    <item>
-      <title>Mantova: intensificati i controlli durante il festival Food and Science. Le Forze dell’Ordine identificano gli attivisti.</title>
-      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226a0c05c9f07b5652282642</link>
-      <guid isPermaLink="false">756a9a3eea076652afeab570752158aefdb01902</guid>
-      <pubDate>Tue, 19 May 2026 00:00:00 +0200</pubDate>
-      <description>Mantova: intensificati i controlli durante il festival Food and Science. Le Forze dell’Ordine identificano gli attivisti.</description>
     </item>
     <item>
       <title>La Polizia di Stato di Mantova si illumina di arancione per l'iniziativa "Orange The World"</title>
