@@ -5,7 +5,7 @@
     <link>https://questure.poliziadistato.it/it/Mantova</link>
     <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova, dai feed RSS della Polizia di Stato (nazionale e FeedBurner, filtrati sui soli comunicati relativi a Mantova) e da un mirror RSS di terze parti già specifico per Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Sat, 24 Oct 2026 13:01:28 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 24 Oct 2026 14:01:29 +0200</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mantova: truffa informatica da oltre 30 mila euro. La Polizia di Stato denuncia sei persone. Perquisizioni in provincia di Caserta e Napoli.</title>
@@ -41,13 +41,6 @@
       <guid isPermaLink="false">590eee607985cd4368fbdf831b84883a348f5999</guid>
       <pubDate>Tue, 29 Sep 2026 00:00:00 +0200</pubDate>
       <description>La Polizia di Stato celebra il suo Santo Patrono San Michele Arcangelo.</description>
-    </item>
-    <item>
-      <title>Mantova, Polizia Stato: Festivaletteratura, intensificati i controlli da parte della Questura. Denunciati tre soggetti per somministrazione di bevande alcoliche a minori e violazione del foglio di via.</title>
-      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226ab4fdf6adf68682597277</link>
-      <guid isPermaLink="false">428229e7d82f4f4de6710b8800db8875d15df284</guid>
-      <pubDate>Thu, 24 Sep 2026 10:54:20 +0200</pubDate>
-      <description>Mantova, Polizia Stato: Festivaletteratura, intensificati i controlli da parte della Questura. Denunciati tre soggetti per somministrazione di bevande alcoliche a minori e violazione del foglio di via.</description>
     </item>
     <item>
       <title>Polizia di Stato, Mantova. Stretta della Questura sul contrasto all’immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</title>
