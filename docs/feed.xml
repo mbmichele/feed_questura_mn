@@ -5,8 +5,15 @@
     <link>https://questure.poliziadistato.it/it/Mantova</link>
     <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova, dai feed RSS della Polizia di Stato (nazionale e FeedBurner, filtrati sui soli comunicati relativi a Mantova) e da un mirror RSS di terze parti già specifico per Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Mon, 26 Oct 2026 18:01:30 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 26 Oct 2026 18:57:24 +0100</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Polizia di Stato, Mantova: Accendono un fumogeno in Galleria Ferri: denunciati due quattordicenni. Denunciato anche uno studente per procurato allarme: aveva creato con l’I.A. e diffuso un finto comunicato di allerta per violenze e disordini.</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226adf8db6453bf938109248</link>
+      <guid isPermaLink="false">73cbc17a9ed52b090a8dae499e710d9575f3902f</guid>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0100</pubDate>
+      <description>Polizia di Stato, Mantova: Accendono un fumogeno in Galleria Ferri: denunciati due quattordicenni. Denunciato anche uno studente per procurato allarme: aveva creato con l’I.A. e diffuso un finto comunicato di allerta per violenze e disordini.</description>
+    </item>
     <item>
       <title>Falsi annunci online: la Polizia di Stato di Mantova individua l’autore e lo denuncia per truffa.</title>
       <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226adf24e8d68ce914231471</link>
@@ -57,6 +64,13 @@
       <description>Polizia di Stato, Mantova. Stretta della Questura sul contrasto all’immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</description>
     </item>
     <item>
+      <title>Polizia di Stato: tre nuovi Funzionari alla Questura</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226a3bc49b5a710728848321</link>
+      <guid isPermaLink="false">ef3274eb4c1cb4be156b324712fc5455e4edfcb7</guid>
+      <pubDate>Sat, 12 Sep 2026 16:51:22 +0200</pubDate>
+      <description>Polizia di Stato: tre nuovi Funzionari alla Questura</description>
+    </item>
+    <item>
       <title>Polizia di Stato: assegnati 11 Agenti alla Questura di Mantova</title>
       <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226a761ff25b668721235487</link>
       <guid isPermaLink="false">43f582846b7e6b3fb138e9503b80a79b942d261d</guid>
@@ -69,13 +83,6 @@
       <guid isPermaLink="false">d6d25d90fd70e72a5dd4d47bc4685bd9175d6de2</guid>
       <pubDate>Sat, 25 Jul 2026 00:00:00 +0200</pubDate>
       <description>Controlli straordinari del territorio e sicurezza stradale: la Polizia di Stato intensifica l’attività di prevenzione nel fine settimana</description>
-    </item>
-    <item>
-      <title>Polizia di Stato: tre nuovi Funzionari alla Questura</title>
-      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226a3bc49b5a710728848321</link>
-      <guid isPermaLink="false">ef3274eb4c1cb4be156b324712fc5455e4edfcb7</guid>
-      <pubDate>Wed, 24 Jun 2026 00:00:00 +0200</pubDate>
-      <description>Polizia di Stato: tre nuovi Funzionari alla Questura</description>
     </item>
     <item>
       <title>La Polizia di Stato di Mantova si illumina di arancione per l'iniziativa "Orange The World"</title>
