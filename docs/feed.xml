@@ -5,8 +5,15 @@
     <link>https://questure.poliziadistato.it/it/Mantova</link>
     <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova, dai feed RSS della Polizia di Stato (nazionale e FeedBurner, filtrati sui soli comunicati relativi a Mantova) e da un mirror RSS di terze parti già specifico per Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Mon, 02 Nov 2026 20:01:25 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 02 Nov 2026 21:01:28 +0100</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Polizia di Stato, Mantova: intensificati i servizi di controllo di polizia giudiziaria in occasione di Halloween. Quattro persone arrestate e quattro deferite all’Autorità Giudiziaria</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226ae8e0721ea65627502090</link>
+      <guid isPermaLink="false">6b4191c45f05aec554ff6daaed6b1aad9b687fc7</guid>
+      <pubDate>Mon, 02 Nov 2026 00:00:00 +0100</pubDate>
+      <description>Polizia di Stato, Mantova: intensificati i servizi di controllo di polizia giudiziaria in occasione di Halloween. Quattro persone arrestate e quattro deferite all’Autorità Giudiziaria</description>
+    </item>
     <item>
       <title>Polizia di Stato, Mantova: Accendono un fumogeno in Galleria Ferri: denunciati due quattordicenni. Denunciato anche uno studente per procurato allarme: aveva creato con l’I.A. e diffuso un finto comunicato di allerta per violenze e disordini.</title>
       <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226adf8db6453bf938109248</link>
@@ -64,18 +71,18 @@
       <description>Polizia di Stato, Mantova. Stretta della Questura sul contrasto all’immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</description>
     </item>
     <item>
+      <title>Controlli straordinari del territorio e sicurezza stradale: la Polizia di Stato intensifica l’attività di prevenzione nel fine settimana</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226a649f025adbb682764884</link>
+      <guid isPermaLink="false">d6d25d90fd70e72a5dd4d47bc4685bd9175d6de2</guid>
+      <pubDate>Sat, 12 Sep 2026 17:06:22 +0200</pubDate>
+      <description>Controlli straordinari del territorio e sicurezza stradale: la Polizia di Stato intensifica l’attività di prevenzione nel fine settimana</description>
+    </item>
+    <item>
       <title>Polizia di Stato: assegnati 11 Agenti alla Questura di Mantova</title>
       <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226a761ff25b668721235487</link>
       <guid isPermaLink="false">43f582846b7e6b3fb138e9503b80a79b942d261d</guid>
       <pubDate>Fri, 07 Aug 2026 00:00:00 +0200</pubDate>
       <description>Polizia di Stato: assegnati 11 Agenti alla Questura di Mantova</description>
-    </item>
-    <item>
-      <title>Controlli straordinari del territorio e sicurezza stradale: la Polizia di Stato intensifica l’attività di prevenzione nel fine settimana</title>
-      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226a649f025adbb682764884</link>
-      <guid isPermaLink="false">d6d25d90fd70e72a5dd4d47bc4685bd9175d6de2</guid>
-      <pubDate>Sat, 25 Jul 2026 00:00:00 +0200</pubDate>
-      <description>Controlli straordinari del territorio e sicurezza stradale: la Polizia di Stato intensifica l’attività di prevenzione nel fine settimana</description>
     </item>
     <item>
       <title>La Polizia di Stato di Mantova si illumina di arancione per l'iniziativa "Orange The World"</title>
