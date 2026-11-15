@@ -5,7 +5,7 @@
     <link>https://questure.poliziadistato.it/it/Mantova</link>
     <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova, dai feed RSS della Polizia di Stato (nazionale e FeedBurner, filtrati sui soli comunicati relativi a Mantova) e da un mirror RSS di terze parti già specifico per Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Sun, 15 Nov 2026 16:01:27 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 15 Nov 2026 17:01:23 +0100</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mantova: auto mai consegnate e false rottamazioni, tre persone denunciate dalla Polizia di Stato</title>
@@ -57,13 +57,6 @@
       <description>Mantova: truffa informatica da oltre 30 mila euro. La Polizia di Stato denuncia sei persone. Perquisizioni in provincia di Caserta e Napoli.</description>
     </item>
     <item>
-      <title>Polizia di Stato: la Polizia Stradale di Mantova sequestra 60 auto fuori uso, rifiuti pericolosi e un’officina meccanica.</title>
-      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226ad2388962b8c674354041</link>
-      <guid isPermaLink="false">59a5590e8e2775a739ce9e055b4a1ef4c7835c7f</guid>
-      <pubDate>Fri, 16 Oct 2026 00:00:00 +0200</pubDate>
-      <description>Polizia di Stato: la Polizia Stradale di Mantova sequestra 60 auto fuori uso, rifiuti pericolosi e un’officina meccanica.</description>
-    </item>
-    <item>
       <title>ACI 59ª Giornata dell'automobilista: premiata la Polizia di Stato</title>
       <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226ac663c913476435512001</link>
       <guid isPermaLink="false">5212fe144db5e72046f2fbcc6421cbf23a89c859</guid>
@@ -76,6 +69,13 @@
       <guid isPermaLink="false">590eee607985cd4368fbdf831b84883a348f5999</guid>
       <pubDate>Tue, 29 Sep 2026 00:00:00 +0200</pubDate>
       <description>La Polizia di Stato celebra il suo Santo Patrono San Michele Arcangelo.</description>
+    </item>
+    <item>
+      <title>Polizia di Stato, Mantova. Stretta della Questura sul contrasto all’immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226aacff1754a79029370302</link>
+      <guid isPermaLink="false">b46e5a0eeeac2bef8e1ef485b3b3586133d05573</guid>
+      <pubDate>Fri, 18 Sep 2026 00:00:00 +0200</pubDate>
+      <description>Polizia di Stato, Mantova. Stretta della Questura sul contrasto all’immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</description>
     </item>
     <item>
       <title>La Polizia di Stato di Mantova si illumina di arancione per l'iniziativa "Orange The World"</title>
