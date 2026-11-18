@@ -5,8 +5,15 @@
     <link>https://questure.poliziadistato.it/it/Mantova</link>
     <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova, dai feed RSS della Polizia di Stato (nazionale e FeedBurner, filtrati sui soli comunicati relativi a Mantova) e da un mirror RSS di terze parti già specifico per Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Wed, 18 Nov 2026 17:01:38 +0100</lastBuildDate>
+    <lastBuildDate>Wed, 18 Nov 2026 18:01:50 +0100</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mantova, utilizza una carta d’identità elettronica priva di microchip per sostenere l’esame della patente di guida: scatta il sequestro della Polizia di Stato</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226afdd6474403d360427144</link>
+      <guid isPermaLink="false">e7a12bf3c377addb660e58dd1fa44f31de699f3b</guid>
+      <pubDate>Wed, 18 Nov 2026 00:00:00 +0100</pubDate>
+      <description>Mantova, utilizza una carta d’identità elettronica priva di microchip per sostenere l’esame della patente di guida: scatta il sequestro della Polizia di Stato</description>
+    </item>
     <item>
       <title>Mantova: auto mai consegnate e false rottamazioni, tre persone denunciate dalla Polizia di Stato</title>
       <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226af1a89089ef8369185824</link>
@@ -69,13 +76,6 @@
       <guid isPermaLink="false">590eee607985cd4368fbdf831b84883a348f5999</guid>
       <pubDate>Tue, 29 Sep 2026 00:00:00 +0200</pubDate>
       <description>La Polizia di Stato celebra il suo Santo Patrono San Michele Arcangelo.</description>
-    </item>
-    <item>
-      <title>Polizia di Stato, Mantova. Stretta della Questura sul contrasto all’immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</title>
-      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226aacff1754a79029370302</link>
-      <guid isPermaLink="false">b46e5a0eeeac2bef8e1ef485b3b3586133d05573</guid>
-      <pubDate>Fri, 18 Sep 2026 00:00:00 +0200</pubDate>
-      <description>Polizia di Stato, Mantova. Stretta della Questura sul contrasto all’immigrazione clandestina: emessi 7 provvedimenti di espulsione in un solo giorno nei confronti di lavoratori stagionali irregolari.</description>
     </item>
     <item>
       <title>La Polizia di Stato di Mantova si illumina di arancione per l'iniziativa "Orange The World"</title>
