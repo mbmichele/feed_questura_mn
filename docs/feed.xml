@@ -5,7 +5,7 @@
     <link>https://questure.poliziadistato.it/it/Mantova</link>
     <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova, dai feed RSS della Polizia di Stato (nazionale e FeedBurner, filtrati sui soli comunicati relativi a Mantova) e da un mirror RSS di terze parti già specifico per Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Sun, 22 Nov 2026 13:01:22 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 22 Nov 2026 14:01:19 +0100</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mantova, utilizza una carta d’identità elettronica priva di microchip per sostenere l’esame della patente di guida: scatta il sequestro della Polizia di Stato</title>
@@ -55,13 +55,6 @@
       <guid isPermaLink="false">853913231c05ff365f7f3530d6d32f61a995e397</guid>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0100</pubDate>
       <description>Falsi annunci online: la Polizia di Stato di Mantova individua l’autore e lo denuncia per truffa.</description>
-    </item>
-    <item>
-      <title>Mantova: truffa informatica da oltre 30 mila euro. La Polizia di Stato denuncia sei persone. Perquisizioni in provincia di Caserta e Napoli.</title>
-      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226adb2fa9006b2789068728</link>
-      <guid isPermaLink="false">162c7002d4fd2f79b7f1b56bf00f84d617f67042</guid>
-      <pubDate>Fri, 23 Oct 2026 10:49:40 +0200</pubDate>
-      <description>Mantova: truffa informatica da oltre 30 mila euro. La Polizia di Stato denuncia sei persone. Perquisizioni in provincia di Caserta e Napoli.</description>
     </item>
     <item>
       <title>ACI 59ª Giornata dell'automobilista: premiata la Polizia di Stato</title>
