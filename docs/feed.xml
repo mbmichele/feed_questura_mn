@@ -5,7 +5,7 @@
     <link>https://questure.poliziadistato.it/it/Mantova</link>
     <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova, dai feed RSS della Polizia di Stato (nazionale e FeedBurner, filtrati sui soli comunicati relativi a Mantova) e da un mirror RSS di terze parti già specifico per Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Wed, 25 Nov 2026 19:01:33 +0100</lastBuildDate>
+    <lastBuildDate>Wed, 25 Nov 2026 20:01:25 +0100</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Polizia di Stato, Mantova: evaso dagli arresti domiciliari, rintracciato e arrestato dalla Polizia di Stato.</title>
@@ -62,13 +62,6 @@
       <guid isPermaLink="false">6b4191c45f05aec554ff6daaed6b1aad9b687fc7</guid>
       <pubDate>Mon, 02 Nov 2026 00:00:00 +0100</pubDate>
       <description>Polizia di Stato, Mantova: intensificati i servizi di controllo di polizia giudiziaria in occasione di Halloween. Quattro persone arrestate e quattro deferite all’Autorità Giudiziaria</description>
-    </item>
-    <item>
-      <title>Polizia di Stato, Mantova: Accendono un fumogeno in Galleria Ferri: denunciati due quattordicenni. Denunciato anche uno studente per procurato allarme: aveva creato con l’I.A. e diffuso un finto comunicato di allerta per violenze e disordini.</title>
-      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226adf8db6453bf938109248</link>
-      <guid isPermaLink="false">73cbc17a9ed52b090a8dae499e710d9575f3902f</guid>
-      <pubDate>Mon, 26 Oct 2026 18:01:26 +0100</pubDate>
-      <description>Polizia di Stato, Mantova: Accendono un fumogeno in Galleria Ferri: denunciati due quattordicenni. Denunciato anche uno studente per procurato allarme: aveva creato con l’I.A. e diffuso un finto comunicato di allerta per violenze e disordini.</description>
     </item>
     <item>
       <title>ACI 59ª Giornata dell'automobilista: premiata la Polizia di Stato</title>
