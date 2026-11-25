@@ -5,8 +5,15 @@
     <link>https://questure.poliziadistato.it/it/Mantova</link>
     <description>Feed RSS non ufficiale generato automaticamente a partire dalle pagine di archivio della Questura di Mantova, dai feed RSS della Polizia di Stato (nazionale e FeedBurner, filtrati sui soli comunicati relativi a Mantova) e da un mirror RSS di terze parti già specifico per Mantova.</description>
     <language>it-it</language>
-    <lastBuildDate>Wed, 25 Nov 2026 15:01:35 +0100</lastBuildDate>
+    <lastBuildDate>Wed, 25 Nov 2026 16:01:35 +0100</lastBuildDate>
     <atom:link href="https://mbmichele.github.io/feed_questura_mn/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Polizia di Stato, Mantova: evaso dagli arresti domiciliari, rintracciato e arrestato dalla Polizia di Stato.</title>
+      <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226b06f25ad0bb6484035313</link>
+      <guid isPermaLink="false">683200df909a342d27a0c0a2e47526a2203f6086</guid>
+      <pubDate>Wed, 25 Nov 2026 00:00:00 +0100</pubDate>
+      <description>Polizia di Stato, Mantova: evaso dagli arresti domiciliari, rintracciato e arrestato dalla Polizia di Stato.</description>
+    </item>
     <item>
       <title>25 NOVEMBRE – GIORNATA INTERNAZIONALE CONTRO LA VIOLENZA SULLE DONNE</title>
       <link>https://questure.poliziadistato.it/it/Mantova/articolo/10226b06be1624b53695405580</link>
